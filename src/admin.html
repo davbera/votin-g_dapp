@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin: Add Users</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/admin.js"></script>
+
+  </head>
+  <body>
+    <div class="container" style="width: 650px;">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="text-center">Voting App: Administrator Page</h1>
+          <hr/>
+          <br/>
+          <div id="loader">
+            <p class="text-center">Loading...</p>
+            <p class="text-center">Note that you need to be the admin of the contract to interact with this page</p>
+          </div>
+          <div id="content" style="">
+            <h3>Management site: Instructions</h3>
+            <ol>
+              <li>Add all Projects</li>
+              <li>Add all Users</li>
+              <li>Click on start application</li>
+            </ol>
+            <p>Note that participants can not vote until "start application" button has been executed.</p>
+            <p>Also note that once clicked, you can no longer add new participants</p>
+
+            <h3>Manage Projects</h3>
+            <a href="./admin_projects.html"><button>Go</button></a>
+            <h3>Manage Users</h3>
+            <a href="./admin_users.html"><button>Go</button></a>
+            <h3>Application Status</h3>
+            <p id="appStatus">Loading...</p>
+            <h3>Start Application</h3>
+            <form onSubmit="App.addUser(); return false;">
+              <button type="submit" class="btn btn-primary">Start App</button>
+              <hr />
+            </form>
+            <hr/>
+            <p id="accountAddress" class="text-center"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

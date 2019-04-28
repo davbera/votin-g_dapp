@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ITMS x79 Blockchain (Spring 2019) - Vote Results</title>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/vote_teams.js"></script>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="container" style="width: 650px;">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="text-center">ITMS x79 Blockchain (Spring 2019)</h1>
+          <hr/>
+          <br/>
+          <div id="loader">
+                <p class="text-center">Loading...</p>
+          </div>
+          <div id="content" style="display: none;">
+            <div id="userinfo">
+                <p><b>User:</b> <span id="username"></span></p>
+                <p><b>Team:</b> <span id="userTeam"> </span></p>
+                <p><b>Your Account: </b><span id="accountAddress"></span></p>
+                <hr/>
+            </div>
+            <div>
+              <p><b>Q1) Executive Summary Compared to the Team's Presentation</b></p>
+              <p>On a five-point scale [1=Weak - 5=Strong]... How would you rate the Team's Executive Summary as a Representation of the Team's Overall Presentation?</p>
+              <p><b>Q2) Team's Presentation Informative & Interesting</b></p>
+              <p>On a five-point scale [1=Weak - 5=Strong]... How would you rate the Team's Presentation in Terms of its Informative and Engaging Qualities (e.g. I Founding Engagin and I know More Than Before it Started)?</p>
+              <p><b>Q3) The Team's Presentation of its Solution Summary & Design Details</b></p>
+              <p>On a five-point scale [1=Weak - 5=Strong]... How would you rate the Team's Presentation in Terms of its Overall Solution, including Relevant Use Cases, Blockchain Platform, Participants, Operating Model Components & Areas of Impac?t</p>
+              <p><b>Q4 Team's Presentation use of Class/Reading Framworks</b></p>
+              <p>On a five-point scale [1=Weak - 5=Strong]... How would you rate the Team's Use of Core (DLT) and Other Relevant Frameworks from Readings & Discussions?</p>
+              <hr/>
+            </div>
+            <div>
+              <h3>Teams Ranking</h3>
+              <table class="table">
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col" style="width:12%">Q1</th>
+                    <th scope="col" style="width:12%">Q2</th>
+                    <th scope="col" style="width:12%">Q3</th>
+                    <th scope="col" style="width:12%">Q4</th>
+                    <th scope="col">Force Rank</th>
+                </thead>
+                <tbody id="rankingResults">
+                </tbody>
+                </table>
+              </form>
+            </div>
+          </div>         
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voting dApp</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+     <!-- Include all compiled plugins (below), or include individual files as needed -->
+     <script src="js/bootstrap.min.js"></script>
+     <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
+     <script src="js/web3.min.js"></script>
+     <script src="js/truffle-contract.js"></script>
+ <!--    <script src="js/admin.js"></script>-->
+  </head>
+  <body>
+    <div class="container" style="width: 650px;">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="text-center">Voting dApp</h1>
+          <hr/>
+          <br/>
+          <!-- <div id="loader">
+            <p class="text-center">Loading...</p>
+          </div> -->
+          <div id="content" >
+            <h3>Project Description</h3>
+            <p>
+            This voting dApp is a distributed application. It does not run on a server, but on a public blockchain instead.
+            </p>
+            <p>
+            Its functionality consists in two different parts:
+            </p>
+            <ol>
+              <li>Force rank class projects/presentations.</li>
+              <li>Evaluate teammates based on their effort to the project.</li>
+            </ol>
+            <hr/>
+            <!-- <h3>Application Status</h3>
+            <p id="appStatus">Loading...</p>
+            <hr/> -->
+            <p id="accountAddress" class="text-center"></p>
+          </div> 
+
+          <div id="linktovote" class="text-center">
+                <a href="./user_projects.html"><button class="btn btn-primary btn-lg">Vote Projects</button></a>
+                <a href="./user_users.html"><button class="btn btn-primary btn-lg">Vote Teammates</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
