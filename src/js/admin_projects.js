@@ -54,36 +54,47 @@ App = {
   render: async function() {
     App.displayContent(false);
     App.displayAccount(); // async
-    
-    let instance = await App.contracts.Election.deployed();
-    let started = await instance.appStarted();
-    let status = $("#appStatus");
-
-    if(started){
-      status.text("Application Started. Users can now vote. Registrations are over.");
-    }else{
-      status.text("Not started. Registrations opened.");
-    }
-
+    await App.renderProjectsList();
     App.displayContent(true);
   },
 
-  staart: async function() {
+  renderProjectsList: async function() {
+    // instance = await App.contracts.Election.at("0xa53c38a560C22e2Cc8c1D79De334e4897E1626e1");
+    instance = await App.contracts.Election.deployed();
+    projectCount = await instance.projectCount();
+    var candidatesResults = $("#projectsList");
+    candidatesResults.empty();
 
-    let instance = await App.contracts.Election.deployed();
-    await instance.appStart({from: App.account});
+    for (var i = 1; i <= projectCount; i++) {
+      project = await instance.projects(i);
+      var id = project[0];
+      var name = project[1];
+      var voteCount = project[2];
 
+      var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+      candidatesResults.append(candidateTemplate);
+
+    }
   },
-
 
   displayAccount: function(){
     // Load account data
-    web3.eth.getCoinbase(function(err, account) {
-      if (err === null) {
-        App.account = account;
-        $("#accountAddress").html("Your Account: " + account);
-      }
-    });
+      web3.eth.getCoinbase(function(err, account) {
+        if (err === null) {
+          App.account = account;
+          $("#accountAddress").html("Your Account: " + account);
+        }
+      });
+  },
+
+  addProject: async function() {
+    var projectName = $('#projectName').val();
+    instance = await App.contracts.Election.deployed();
+    try{
+      // await instance.addProject(projectName, { from: App.account });
+      await instance.addProject(projectName);
+      // Hide till event?
+    } catch(err){ console.log(err); }
   },
 
   // listenForEvents: function() {

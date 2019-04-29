@@ -74,7 +74,7 @@ App = {
   },*/
 
   initContract: function() {
-    return $.getJSON("Ranking.json", function () { });
+    return $.getJSON("Election.json", function () { });
   },
 
   
@@ -188,7 +188,7 @@ App = {
     let instance = await App.contracts.Ranking.deployed();
     try {
         await instance.rankProject(votes, {from:App.account});
-        await App.render();
+   //     await App.render();
         
     } catch (err) { 
         console.log(err); 
@@ -201,7 +201,7 @@ App = {
     let instance = await App.contracts.Ranking.deployed();
     try {
       await instance.voteProject(projectId,votes,{from:App.account});
-      await App.render();
+    //  await App.render();
     } catch (err) {
       console.log(err); 
       let message = "There was an error while voting. Please refresh the screen and try to vote again."
