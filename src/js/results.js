@@ -12,8 +12,8 @@ App = {
   
           // Load Smart Contract
           let electionContract = await App.initContract();
-          App.contracts.Ranking = TruffleContract(electionContract);
-          App.contracts.Ranking.setProvider(App.web3Provider);
+          App.contracts.Election = TruffleContract(electionContract);
+          App.contracts.Election.setProvider(App.web3Provider);
           
           //Render Page
           await App.render();
@@ -37,7 +37,7 @@ App = {
     },
   
     initContract: function() {
-      return $.getJSON("Ranking.json", function () { });
+      return $.getJSON("Election.json", function () { });
     },
   
     
@@ -81,7 +81,7 @@ App = {
     },
   
     renderTeamRanking: async function() {
-      let instance = await App.contracts.Ranking.deployed();
+      let instance = await App.contracts.Election.deployed();
       let appStarted = await instance.appStarted();
   
       if (appStarted) {
@@ -98,16 +98,17 @@ App = {
             let rank = team[2];
             let timesRanked = team[4];
             
-            let questions = await instance.getQuestionPoints(idTeam,);
+            let questions = await instance.getQuestionPoints(idTeam);
             questionPoints = "<td></td><td></td><td></td><td></td><td></td>"
 
             if (questions != undefined) {
                 let total = parseInt(questions[0]) + parseInt(questions[1]) + parseInt(questions[2]) + parseInt(questions[3]);
-                console.log(total);
                 questionPoints = "<td>"+questions[0]+"</td><td>"+questions[1]+"</td><td>"+questions[2]+"</td><td>"+questions[3]+"</td><td>" + total + "</td>"
             }
+            let ranked = 0
+            if (timesRanked > 0) ranked = rank/timesRanked;
             var rankingTemplate = "<tr id=\""+ id +"\"><th>" + ($('#rankingResults tr').length + 1) + "</th>" + 
-                "<td>" + name + "</td>" + questionPoints + "<td>" + rank/timesRanked + "</td></tr>";
+                "<td>" + name + "</td>" + questionPoints + "<td>" + ranked + "</td><td>"+timesRanked+"</td></tr>";
             
             rankingResults.append(rankingTemplate);
         }

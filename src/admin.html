@@ -8,16 +8,6 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
-    <script src="js/web3.min.js"></script>
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/admin.js"></script>
-
   </head>
   <body>
     <div class="container" style="width: 650px;">
@@ -30,7 +20,7 @@
             <p class="text-center">Loading...</p>
             <p class="text-center">Note that you need to be the admin of the contract to interact with this page</p>
           </div>
-          <div id="content" style="">
+          <div id="content" style="display: none;">
             <h3>Management site: Instructions</h3>
             <ol>
               <li>Add all Projects</li>
@@ -47,7 +37,7 @@
             <h3>Application Status</h3>
             <p id="appStatus">Loading...</p>
             <h3>Start Application</h3>
-            <form onSubmit="App.addUser(); return false;">
+            <form onSubmit="App.staart(); return false;">
               <button type="submit" class="btn btn-primary">Start App</button>
               <hr />
             </form>
@@ -57,5 +47,14 @@
         </div>
       </div>
     </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/admin.js"></script>
   </body>
 </html>

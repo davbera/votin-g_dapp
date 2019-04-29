@@ -92,7 +92,7 @@ App = {
     instance = await App.contracts.Election.deployed();
     try{
       // await instance.addProject(projectName, { from: App.account });
-      await instance.addProject(projectName);
+      await instance.addProject(projectName,{from: App.account});
       // Hide till event?
     } catch(err){ console.log(err); }
   },

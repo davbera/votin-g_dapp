@@ -8,15 +8,6 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
-    <script src="js/web3.min.js"></script>
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/admin_users.js"></script>
   </head>
   <body>
     <div class="container" style="width: 650px;">
@@ -36,7 +27,9 @@
                   <!-- <th scope="col">#</th> -->
                   <th scope="col">Candidate's Name</th>
                   <th scope="col">Project</th>
-                  <th scope="col">Votes</th>
+                  <th scope="col">Points</th>
+                  <th scope="col">Has voted projects</th>
+                  <th scope="col">Has voted teammates</th>
                 </tr>
               </thead>
               <tbody id="candidatesList">
@@ -52,15 +45,24 @@
                 <label for="userProject">Project </label>
                 <select class="form-control" id="userProject"> </select>
               </div>
-              <button type="submit" class="btn btn-primary">Add Project</button>
+              <button type="submit" class="btn btn-primary">Add User</button>
               <hr />
             </form>
             <hr/>
             <p id="accountAddress" class="text-center"></p>
           </div>
+          <p><a href="admin.html">Back</a></p>
         </div>
       </div>
     </div>
 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/admin_users.js"></script>
   </body>
 </html>

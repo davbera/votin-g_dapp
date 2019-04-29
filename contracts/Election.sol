@@ -3,44 +3,40 @@ pragma solidity ^0.5.0;
 contract Election {
 
     // Structures
-    struct User {
-        //address secAddress;
-        bool votedProject;
-        bool votedTeammates;
-        uint projectId;
-    }
-
     struct Candidate {
-        // id
         string name;
         uint projectId;
+        bool rankedProject;
+        bool votedTeammates;
         uint points;
+        mapping(uint => bool) votedProject;
     }
 
     struct Project {
-        // id del projecto
+        // id del proyecto
         uint id;
         string name;
-        uint points;
-        uint count; // Number of people in a proyect
-        mapping(uint => uint) candidates;
+        uint rank;
+        uint count; // Number of people in a project
+        uint timesRanked;
+        mapping(uint => address) candidates;
+        mapping(uint => uint) questionPoints;
+        mapping(uint => uint) timesQuestAnswered;
     }
 
     // Mappings
-    mapping(address => User) public users;
-    mapping(uint => Candidate) public candidates;
+    mapping(address => Candidate) public candidates;
     mapping(uint => Project) public projects;
+    //mapping(uint => address) public candidatesList;
 
     // Variables
+    uint8 private NUM_QUESTION = 4;
+
     address private admin;
     bool public appStarted;
     uint public userCount;
     uint public projectCount;
 
-    // Events
-    // event votedEvent (
-    //     uint indexed _candidateId
-    // );
 
     constructor(address adminAddress) public {
         admin = adminAddress;
@@ -53,7 +49,7 @@ contract Election {
         require(msg.sender == admin);
         require(appStarted == false); 
         projectCount++;
-        projects[projectCount] = Project(projectCount, name, 0, 0);
+        projects[projectCount] = Project(projectCount, name, 0, 0, 0);
     }
 
     function addUser(address secAddress, uint projectId, string memory name) public payable {
@@ -62,9 +58,9 @@ contract Election {
         require(projects[projectId].id > 0);
         projects[projectId].count++;
         userCount++;
-        projects[projectId].candidates[projects[projectId].count]=userCount;
-        users[secAddress] = User(false, false, projectId);
-        candidates[userCount] = Candidate(name, projectId, 0);
+        //candidatesList[userCount] = secAddress;
+        projects[projectId].candidates[projects[projectId].count]=secAddress;
+        candidates[secAddress] = Candidate(name, projectId, false, false, 0);
     }
 
     function appStart() public payable {
@@ -73,25 +69,56 @@ contract Election {
         appStarted = true;
     }
 
-    function voteProject(uint[] memory votes) public payable {
-        require(appStarted == true);
-        User memory user = users[msg.sender];
-        require(user.projectId > 0);
-        require(user.votedProject == false);
+    function getProjectCandidate(uint projectId, uint candidateNum) external view returns (address){
+        return projects[projectId].candidates[candidateNum];
+    }
 
-        require(votes.length == projectCount);
-        require(votes[user.projectId-1] == 0);
-        // comprobaciones
+    function getQuestionPoints(uint projectId) external view returns (uint, uint, uint, uint) { 
+        return (projects[projectId].questionPoints[0], projects[projectId].questionPoints[1], projects[projectId].questionPoints[2], projects[projectId].questionPoints[3]);
+    }
+
+    function getTimesQuestAnswered(uint projectId) external view returns (uint, uint, uint, uint) { 
+        return (projects[projectId].timesQuestAnswered[0], projects[projectId].timesQuestAnswered[1], projects[projectId].timesQuestAnswered[2], projects[projectId].timesQuestAnswered[3]);
+    }
+    
+
+    function hasVoted(uint projectId) external view returns (bool) { 
+        return (candidates[msg.sender].votedProject[projectId]);
+    }
+
+    function voteProject(uint projectId, uint[] memory votes) public payable {
+        require(projectId > 0);
+        require(projectId <= projectCount);
+        require(appStarted == true);
+        require(candidates[msg.sender].projectId > 0);
+        require(candidates[msg.sender].projectId != projectId);
+        require(candidates[msg.sender].votedProject[projectId] == false);
+        require(votes.length == NUM_QUESTION);
+  
         for(uint i = 0; i < votes.length; i++){
-            projects[i+1].points+=votes[i];
+            projects[projectId].questionPoints[i] += votes[i];
         }
-        // user.votedProject = true;
-        users[msg.sender].votedProject = true;
+
+        candidates[msg.sender].votedProject[projectId] = true;
+    }
+
+    function rankProject(uint[] memory votes) public payable {
+        require(appStarted == true);
+        require(candidates[msg.sender].projectId > 0);
+        require(candidates[msg.sender].rankedProject == false);
+  
+        for(uint i = 0; i < votes.length; i++){
+            projects[i+1].rank += votes[i];
+            if (candidates[msg.sender].projectId != i+1) {
+                projects[i+1].timesRanked += 1;
+            }
+        }
+        candidates[msg.sender].rankedProject = true;
     }
 
     function voteTeammates(uint[] memory votes) public payable {
         require(appStarted == true); 
-        User memory user = users[msg.sender];
+        Candidate memory user = candidates[msg.sender];
         require(user.projectId > 0);
         require(user.votedTeammates == false);
         require(votes.length == projects[user.projectId].count);
@@ -102,9 +129,9 @@ contract Election {
         }
         require(suma == (projects[user.projectId].count + 1));
         for (uint i = 0 ; i < votes.length; i++){
-            candidates[ projects[user.projectId].candidates[i] + 1].points+=votes[i];
+            candidates[ projects[user.projectId].candidates[i] ].points+=votes[i];
         }
-        users[msg.sender].votedTeammates = true;
+        candidates[msg.sender].votedTeammates = true;
     }
 
 }
