@@ -99,22 +99,12 @@ App = {
 
   displayAccount: async function(){
     // Load account data
-    if (web3.currentProvider.isMetaMask) {
-      ethereum.on('accountsChanged', function (accounts) {
-        let account = accounts[0];
+    web3.eth.getCoinbase(function(err, account) {
+      if (err === null) {
         App.account = account;
-        $("#userinfo #accountAddress").html(account);
-      });
-      
-      ethereum.enable();
-    } else {
-      web3.eth.getCoinbase(function(err, account) {
-        if (err === null) {
-          App.account = account;
-          $("#accountAddress").html(account);
-        }
-      });
-    }
+        $("#accountAddress").html(account);
+      }
+    });
 
     let instance = await App.contracts.Ranking.deployed();
     let user = await instance.candidates(App.account);
