@@ -97,6 +97,7 @@ contract Election {
   
         for(uint i = 0; i < votes.length; i++){
             projects[projectId].questionPoints[i] += votes[i];
+            projects[projectId].timesQuestAnswered[i] += 1;
         }
 
         candidates[msg.sender].votedProject[projectId] = true;
