@@ -15,7 +15,44 @@
      <!-- <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script> -->
      <script src="js/web3.min.js"></script>
      <script src="js/truffle-contract.js"></script>
- <!--    <script src="js/admin.js"></script>-->
+
+    <script>
+      async function getInfoAccount() {
+        let electionContract = await $.getJSON("Election.json", function () { });
+        let election = TruffleContract(electionContract);
+
+        if (typeof web3 !== 'undefined') {
+        // If a web3 instance is already provided by Meta Mask.
+          web3Provider = web3.currentProvider;
+          web3 = new Web3(web3.currentProvider);
+        } else {
+          // Specify default instance if no web3 instance provided
+          web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+          web3 = new Web3(web3Provider);
+        }
+
+        election.setProvider(web3Provider);
+
+        let account = "";
+        web3.eth.getCoinbase(function(err, account) {
+          if (err === null) {
+            account = this.account;
+            $("#accountAddress").html(account);
+          }
+        });
+        
+        let instance = await election.deployed();
+        let user = await instance.candidates(account);
+        let projectId = user[1];
+        let project = await instance.projects(projectId);
+        let projectName = project[1];
+        console.log(projectName);
+        $("#userinfo #username").html(username);
+        $("#userinfo #userTeam").html(projectName);
+    }
+    getInfoAccount()
+    </script> 
+
   </head>
   <body>
     <div class="container" style="width: 650px;">
@@ -27,6 +64,12 @@
           <!-- <div id="loader">
             <p class="text-center">Loading...</p>
           </div> -->
+          <!--div id="userinfo">
+            <p><b>User:</b> <span id="username"></span></p>
+            <p><b>Team:</b> <span id="userTeam"> </span></p>
+            <p><b>Your Account: </b><span id="accountAddress"></span></p>
+            <hr/>
+          </div-->
           <div id="content" >
             <h3>Project Description</h3>
             <p>
@@ -48,7 +91,7 @@
 
           <div id="linktovote" class="text-center">
                 <a href="./user_projects.html"><button class="btn btn-primary btn-lg">Vote Projects</button></a>
-                <!--a href="./user_users.html"><button class="btn btn-primary btn-lg">Vote Teammates</button></a-->
+                <a href="./user_users.html"><button class="btn btn-primary btn-lg">Vote Teammates</button></a>
           </div>
         </div>
       </div>

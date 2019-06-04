@@ -95,12 +95,12 @@ contract Election {
         require(candidates[msg.sender].votedProject[projectId] == false);
         require(votes.length == NUM_QUESTION);
   
+        candidates[msg.sender].votedProject[projectId] = true;
+        
         for(uint i = 0; i < votes.length; i++){
             projects[projectId].questionPoints[i] += votes[i];
             projects[projectId].timesQuestAnswered[i] += 1;
         }
-
-        candidates[msg.sender].votedProject[projectId] = true;
     }
 
     function rankProject(uint[] memory votes) public payable {
@@ -130,7 +130,7 @@ contract Election {
         }
         require(suma == (projects[user.projectId].count + 1));
         for (uint i = 0 ; i < votes.length; i++){
-            candidates[ projects[user.projectId].candidates[i] ].points+=votes[i];
+            candidates[ projects[user.projectId].candidates[i+1] ].points+=votes[i];
         }
         candidates[msg.sender].votedTeammates = true;
     }

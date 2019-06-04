@@ -37,7 +37,7 @@ App = {
     },
   
     initContract: function() {
-      return $.getJSON("Ranking.json", function() { });
+      return $.getJSON("Election.json", function() { });
     },
   
     displayContent: function(display) {
@@ -65,16 +65,27 @@ App = {
       if (appStarted) {
         let project = await instance.projects(App.projectId);
         let numTeammates = project[3];
-        console.log(parseInt(numTeammates));
+
         if (numTeammates > 0) {
             let candidateList = $("#candidatesList");
             candidateList.empty();
-            console.log(numTeammates);
-            for (var i=1; i<=numTeammates; i++) {
-                let name = await instance.getTeammate(App.projectId, i);
-                var candidateRow = "<tr><th>" + ($('#candidatesList tr').length + 1) + "</th><td>" + name + "</td><td></td>";
+
+            for (var i=1; i<=parseInt(numTeammates); i++) {
+                let address = await instance.getProjectCandidate(App.projectId, i);
+                let user = await instance.candidates(address);
+
+                let name = user[0];
+                
+                if (address == App.account) {
+                  input = "<input type=\"number\" class=\"form-control\"  value=\"1\" disabled>"
+                } else {
+                  input = "<input type=\"number\" class=\"form-control\" min=\"1\" max=\""+(parseInt(numTeammates)+1)+"\" value=\"1\"/>"
+                }
+                var candidateRow = "<tr><th>" + ($('#candidatesList tr').length + 1) + "</th><td>" + name + "</td><td>"+input+"</td></tr>";
                 candidateList.append(candidateRow);
             }
+            let voteButton = "<button type=\"submit\" class=\"btn btn-primary\" onclick=\"vote()\">Vote</button>"
+            $("#candidatesList").parent().parent().append(voteButton);
         } else {
             let message = "There aren't teammatess to vote";
             $("#content").append("<div class=\"alert alert-info\">"+message+"</div>");    
@@ -112,11 +123,23 @@ App = {
         App.projectId = projectId;
         let project = await instance.projects(projectId);
         let projectName = project[1];
-        $("#userinfo #username").html(user);
+        let username = user[0]
+        $("#userinfo #username").html(username);
         $("#userinfo #userTeam").html(projectName);
       }
   
     },
+
+    voteProject: async function(votes) {
+      let instance = await App.contracts.Election.deployed();
+      try {
+        await instance.voteTeammates(votes,{from:App.account});
+      } catch (err) {
+        console.log(err); 
+        let message = "There was an error while voting. Please refresh the screen and try to vote again."
+        $("#content").html("<div class=\"alert alert-danger\">"+ message +"</div>");
+      }
+    }
   
     
     // listenForEvents: function() {
@@ -135,6 +158,19 @@ App = {
   
   };
   
+function vote() {
+    let votes = [];
+    //let numProjects = $("#candidatesList").children().length + 1;
+    
+    $("#info-error").remove();
+
+    $("#candidatesList").children().find("input").each(function(i){
+      votes.push(parseInt($(this)[0].value));
+    });
+  
+     App.voteProject(votes);
+}
+
   $(function() {
     $(window).load(function() {
       App.main();

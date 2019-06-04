@@ -190,6 +190,7 @@ App = {
   voteProject: async function(projectId,votes) {
     let instance = await App.contracts.Ranking.deployed();
     try {
+      console.log("Vote project " + projectId + "with the following votes: " + votes)
       await instance.voteProject(projectId,votes,{from:App.account});
     //  await App.render();
     } catch (err) {
